@@ -1,0 +1,59 @@
+@import '~reset-css'
+@import './vars'
+
+*
+	margin: 0
+	padding: 0
+	box-sizing: border-box
+
+
+body
+	font-family: $regular
+	color: $black
+	font-weight: normal
+
+h1
+	font: 30px $regular
+
+h2
+	font: 20px $regular
+
+.container
+	width: 97%
+	max-width: 1200px
+	margin: 0 auto
+
+.page
+	padding: 110px 0 50px
+
+.link
+	color: $black
+	cursor: pointer
+	text-decoration: none
+	transition: color .2s
+	&:hover
+		color: $accent
+
+
+
+.fadeInUp
+	transition: opacity .3s, transform .3s
+	animation: show .3s
+
+.fadeIn
+	transition: opacity .3s
+	animation: fade .3s
+
+@keyframes show
+	0%
+		transform: translateY(30px)
+		opacity: 0
+	100%
+		transform: translateY(0)
+		opacity: 1
+
+@keyframes fade
+	0%
+		opacity: 0
+	100%
+		opacity: 1
