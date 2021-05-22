@@ -1,0 +1,3 @@
+export const SET_ISSUES = 'ISSUES/SET_ISSUES'
+export const SET_PAGE = 'ISSUES/SET_PAGE'
+export const SET_IS_FETCHING = 'ISSUES/SET_IS_FETCHING'

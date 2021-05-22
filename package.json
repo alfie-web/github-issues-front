@@ -7,9 +7,11 @@
     "clsx": "^1.1.1",
     "materialize-css": "^1.0.0-rc.2",
     "node-sass": "^6.0.0",
+    "prop-types": "^15.7.2",
     "query-string": "^7.0.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
+    "react-redux": "^7.2.4",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.3",
     "redux": "^4.1.0",
@@ -30,18 +32,14 @@
     "rules": {
       "semi": 0,
       "comma": "off",
-      "indent": [
-        "error",
-        3
-      ],
-      "react/jsx-indent": [
-        "error",
-        3
-      ],
-      "react/jsx-indent-props": [
-        "error",
-        3
-      ]
+      "linebreak-style": 0,
+      "indent": "off",
+      "react/jsx-indent": "off",
+      "react/jsx-indent-props": "off",
+      "arrow-body-style": "off",
+      "react/react-in-jsx-scope": "off",
+      "react/forbid-prop-types": "off",
+      "no-prototype-builtins": "off"
     }
   },
   "browserslist": {
