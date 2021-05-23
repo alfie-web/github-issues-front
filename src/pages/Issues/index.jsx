@@ -1,5 +1,7 @@
 import IssuesList from './components/List'
 
+import './Issues.sass'
+
 const IssuesPage = () => {
    return (
       <main className="Issues page">

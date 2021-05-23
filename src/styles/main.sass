@@ -6,9 +6,9 @@
 	padding: 0
 	box-sizing: border-box
 
-
 body
 	font-family: $regular
+	font-size: 16px
 	color: $black
 	font-weight: normal
 
@@ -16,7 +16,14 @@ h1
 	font: 30px $regular
 
 h2
-	font: 20px $regular
+	font: 20px/30px $regular
+
+a
+	text-decoration: none
+	color: inherit
+	transition: color .2s
+	&:hover
+		color: $accent
 
 .container
 	width: 97%
@@ -24,16 +31,7 @@ h2
 	margin: 0 auto
 
 .page
-	padding: 110px 0 50px
-
-.link
-	color: $black
-	cursor: pointer
-	text-decoration: none
-	transition: color .2s
-	&:hover
-		color: $accent
-
+	padding: 70px 0 50px
 
 
 .fadeInUp

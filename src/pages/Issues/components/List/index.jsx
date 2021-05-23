@@ -3,6 +3,7 @@ import { useHistory } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 
 import { fetchIssues } from '../../../../store/actions/issues'
+import Preloader from '../../../../components/Preloader'
 import IssuesItem from '../Item'
 
 const IssuesList = () => {
@@ -25,8 +26,7 @@ const IssuesList = () => {
    return (
       <div className="Issues__list">
          <div className="Issues__list-items">
-            {isFetching && <div>Loading</div>}
-            {/* {isFetching && <Preloader />} */}
+            {isFetching && <Preloader />}
 
             {issues.length
                ? issues.map((item) => (

@@ -1,5 +1,10 @@
-import React from 'react'
-import PropTypes from 'prop-types'
+import { memo } from 'react'
+
+import IssuesItemTypes from './types'
+import Avatar from '../../../../components/Avatar'
+import IssueLabels from './components/Labels'
+import IssueInfo from './components/Info'
+import IssueTitle from './components/Title'
 
 const IssuesItem = ({
    title,
@@ -11,45 +16,42 @@ const IssuesItem = ({
 }) => {
    return (
       <div className="Issues__item">
-         <div className="Issues__item-avatar">{user.avatar_url}</div>
+         <Avatar
+            url={user.avatar_url}
+            userName={user.login}
+            className="Issues__item-avatar"
+         />
 
-         <div className="Issues__item-info">
-            <div className="Issues__item-labels">
-               {labels.length && labels.map((l) => (
-                  <span key={l.id}>{l.name}</span>
-               ))}
+         <div className="Issues__item-content">
+            <div className="Issues__item-content-top">
+               <IssueLabels labels={labels} />
+
+               <IssueInfo
+                  state={state}
+                  createdAt={createdAt}
+               />
             </div>
 
-            <span>
-               {state}
-               {createdAt}
-            </span>
-
-            <h3 className="Issues__item-title">
-               {title}
-               {number}
-            </h3>
+            <IssueTitle
+               number={number}
+               title={title}
+            />
          </div>
       </div>
    )
 }
 
-IssuesItem.propTypes = {
-   title: PropTypes.string.isRequired,
-   number: PropTypes.number.isRequired,
-   user: PropTypes.shape({
-      avatar_url: PropTypes.string,
-      login: PropTypes.string,
-   }).isRequired,
-   labels: PropTypes.arrayOf(
-      PropTypes.shape({
-         id: PropTypes.number,
-         name: PropTypes.string,
-         color: PropTypes.string,
-      }),
-   ).isRequired,
-   state: PropTypes.string.isRequired,
-   createdAt: PropTypes.string.isRequired,
+IssuesItem.defaultProps = {
+   labels: [],
 }
 
-export default IssuesItem
+IssuesItem.propTypes = {
+   title: IssuesItemTypes.title.isRequired,
+   number: IssuesItemTypes.number.isRequired,
+   user: IssuesItemTypes.user.isRequired,
+   labels: IssuesItemTypes.labels,
+   state: IssuesItemTypes.state.isRequired,
+   createdAt: IssuesItemTypes.createdAt.isRequired,
+}
+
+export default memo(IssuesItem)

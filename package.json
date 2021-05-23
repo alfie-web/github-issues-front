@@ -5,6 +5,7 @@
   "dependencies": {
     "axios": "^0.21.1",
     "clsx": "^1.1.1",
+    "dayjs": "^1.10.4",
     "materialize-css": "^1.0.0-rc.2",
     "node-sass": "^6.0.0",
     "prop-types": "^15.7.2",
@@ -39,7 +40,9 @@
       "arrow-body-style": "off",
       "react/react-in-jsx-scope": "off",
       "react/forbid-prop-types": "off",
-      "no-prototype-builtins": "off"
+      "no-prototype-builtins": "off",
+      "operator-linebreak": "off",
+      "import/prefer-default-export": "off"
     }
   },
   "browserslist": {
