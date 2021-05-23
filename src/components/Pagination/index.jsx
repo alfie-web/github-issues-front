@@ -64,6 +64,7 @@ const Pagination = ({
 }
 
 Pagination.defaultProps = {
+   currentPage: 1,
    offsetLeft: 1,
    offsetRight: 3,
    onPageSelect: () => {},
@@ -71,7 +72,7 @@ Pagination.defaultProps = {
 }
 
 Pagination.propTypes = {
-   currentPage: PropTypes.number.isRequired,
+   currentPage: PropTypes.number,
    totalPages: PropTypes.number.isRequired,
    offsetLeft: PropTypes.number,
    offsetRight: PropTypes.number,

@@ -19,17 +19,19 @@ const IssuesList = () => {
    const sortDirection = useSelector((state) => state.issues.sortDirection)
    const totalIssuesCount = useSelector((state) => state.issues.total_issues_count)
    const isFetching = useSelector((state) => state.issues.isFetching)
+   const repoData = useSelector((state) => state.issues.repoData)
 
    const onPageSelect = useCallback((selectedPage) => {
-      scrollTo({ top: 0 })
       dispatch(setPage(+selectedPage))
    }, [dispatch])
 
-   const onBack = useCallback(() => {
-      const params = queryString.parse(history.location.search)
+   const getPageFromUrl = useCallback(() => {
+      return queryString.parse(history.location.search).page ?? 1
+   }, [history])
 
-      dispatch(setPage(params.page ?? 1))
-   }, [dispatch, history])
+   const onBack = useCallback(() => {
+      onPageSelect(getPageFromUrl())
+   }, [onPageSelect, getPageFromUrl])
 
    useEffect(() => {
       window.addEventListener('popstate', onBack, false)
@@ -39,15 +41,17 @@ const IssuesList = () => {
 
    useEffect(() => {
       dispatch(fetchIssues())
-      const pageP = queryString.parse(history.location.search).page ?? 1
-      const reqString = `/?page=${page}&state=${sortField}&direction=${sortDirection}`
+      const reqString = `/?userName=${repoData.userName}&repoName=${repoData.repoName}&page=${page}&state=${sortField}&direction=${sortDirection}`
 
-      if (+pageP < page) {
+      // Нужно для корректной работы кнопок назад/вперёд в браузере
+      if (+getPageFromUrl() < page) {
          history.push(reqString)
       } else {
          history.replace(reqString)
       }
-   }, [dispatch, history, page, sortField, sortDirection])
+
+      scrollTo({ top: 0 })
+   }, [dispatch, getPageFromUrl, history, page, sortField, sortDirection, repoData])
 
    return (
       <div className="Issues__list">
@@ -76,7 +80,7 @@ const IssuesList = () => {
          {!isFetching && (
             <Pagination
                className="Issues__pagination"
-               currentPage={page}
+               currentPage={+page}
                totalPages={Math.ceil(totalIssuesCount / 30)}
                onPageSelect={onPageSelect}
             />

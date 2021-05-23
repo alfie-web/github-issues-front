@@ -6,21 +6,37 @@ import {
    SET_IS_FETCHING,
    SET_SORT_FIELD,
    SET_SORT_DIRECTION,
+   SET_REPO_DATA,
 } from '../types/issues'
 
 export const setIssues = (payload) => actionCreator(SET_ISSUES, payload)
+export const setRepoData = (payload) => actionCreator(SET_REPO_DATA, payload)
 export const setPage = (payload) => actionCreator(SET_PAGE, payload)
 export const setIsFetching = (payload) => actionCreator(SET_IS_FETCHING, payload)
 export const setSortField = (payload) => actionCreator(SET_SORT_FIELD, payload)
 export const setSortDirection = (payload) => actionCreator(SET_SORT_DIRECTION, payload)
 
 export const fetchIssues = () => async (dispatch, getState) => {
-   const { issues: { page, sortField, sortDirection } } = getState()
+   const {
+      issues: {
+         page,
+         sortField,
+         sortDirection,
+         repoData,
+      },
+   } = getState()
+
+   if (!repoData.userName || !repoData.repoName) return
 
    dispatch(setIsFetching(true))
 
    try {
-      const { data } = await issuesAPI.getAll({ page, sortField, sortDirection })
+      const { data } = await issuesAPI.getAll({
+         page,
+         sortField,
+         sortDirection,
+         ...repoData,
+      })
 
       dispatch(
          setIssues({

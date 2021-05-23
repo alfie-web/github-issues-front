@@ -5,6 +5,7 @@ import {
    SET_IS_FETCHING,
    SET_SORT_FIELD,
    SET_SORT_DIRECTION,
+   SET_REPO_DATA,
 } from '../types/issues'
 
 const urlParams = queryString.parse(window.location.search)
@@ -16,6 +17,10 @@ const initialState = {
    isFetching: false,
    sortField: urlParams.state ?? 'all',
    sortDirection: urlParams.direction ?? 'desc',
+   repoData: {
+      userName: urlParams.userName ?? '',
+      repoName: urlParams.repoName ?? '',
+   },
 }
 
 const issuesReducer = (state = initialState, { type, payload }) => {
@@ -43,6 +48,12 @@ const issuesReducer = (state = initialState, { type, payload }) => {
          return {
             ...state,
             sortDirection: payload,
+         }
+
+      case SET_REPO_DATA:
+         return {
+            ...state,
+            repoData: payload,
          }
 
       case SET_IS_FETCHING:

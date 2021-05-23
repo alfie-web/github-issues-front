@@ -1,5 +1,6 @@
 import IssuesList from './components/List'
 import IssuesSort from './components/Sort'
+import IssuesSearchForm from './components/SearchForm'
 
 import './Issues.sass'
 
@@ -11,6 +12,8 @@ const IssuesPage = () => {
                <h1>Issues</h1>
                <IssuesSort />
             </div>
+
+            <IssuesSearchForm />
 
             <div className="Todo__items">
                <IssuesList />
