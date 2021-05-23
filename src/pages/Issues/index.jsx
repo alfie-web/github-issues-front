@@ -1,4 +1,5 @@
 import IssuesList from './components/List'
+import IssuesSort from './components/Sort'
 
 import './Issues.sass'
 
@@ -8,7 +9,7 @@ const IssuesPage = () => {
          <div className="container">
             <div className="box">
                <h1>Issues</h1>
-               {/* <Sorting /> */}
+               <IssuesSort />
             </div>
 
             <div className="Todo__items">
