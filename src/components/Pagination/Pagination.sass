@@ -1,0 +1,29 @@
+@import '../../styles/vars' 
+
+.Pagination
+	display: flex
+
+	&__delimiter
+		pointer-events: none
+
+	&__item, &__delimiter
+		display: flex
+		justify-content: center
+		align-items: center
+		min-width: 54px
+		height: 54px
+		padding: 0 15px
+		margin-right: 10px
+		border-radius: $border-radius
+		cursor: pointer
+		user-select: none
+		transition: background-color .2s, color .2s
+
+		&:hover
+			background-color: $light
+		&.--active
+			color: white
+			background-color: $black
+
+	&__item:last-child
+		margin-right: 0

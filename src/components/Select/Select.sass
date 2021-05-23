@@ -1,0 +1,76 @@
+@import '../../styles/vars'
+
+.Select
+	position: relative
+	display: block
+	cursor: pointer
+
+	&__current
+		$current: &
+		display: flex
+		align-items: center
+		font: 18px $bold
+		color: $black
+		transition: color .2s
+
+		&:hover
+			color: $black
+
+		&-icon
+			display: flex
+			align-items: center
+			justify-content: center
+			width: 32px
+			min-width: 32px
+			height: 32px
+			margin-right: 15px
+			border-radius: 50%
+			border: 2px solid $light
+			transition: border .2s
+
+			svg
+				fill: $gray
+				transition: fill .2s, transform .2s
+
+		&--active
+			color: $black
+
+			#{$current}-icon
+				border: 2px solid $black
+				svg
+					fill: $black
+					transform: rotate(180deg)
+		
+
+	&__dropdown
+		position: absolute
+		top: 30px
+		left: -30px
+		min-height: 43px
+		max-height: 192px
+		overflow: auto
+		padding: 10px 0
+		z-index: 200
+		border-radius: $border-radius
+		background-color: white
+		box-shadow: $shadow
+		cursor: auto
+		animation: drop .2s ease
+
+	&__option
+		cursor: pointer
+		user-select: none
+		white-space: nowrap
+		padding: 10px 30px
+		box-sizing: border-box
+		font-size: 18px
+		&:hover
+			background-color: $light
+
+		&--selected
+			color: $black
+			background-color: $light
+			pointer-events: none
+		&--disabled
+			color: $gray
+			pointer-events: none
