@@ -1,6 +1,7 @@
 import queryString from 'query-string'
 import {
    SET_ISSUES,
+   SET_CURRENT_ISSUE,
    SET_PAGE,
    SET_IS_FETCHING,
    SET_SORT_FIELD,
@@ -12,6 +13,7 @@ const urlParams = queryString.parse(window.location.search)
 
 const initialState = {
    issues: [],
+   currentIssue: null,
    page: urlParams.page ? +urlParams.page : 1,
    totalIssuesCount: null,
    isFetching: false,
@@ -30,6 +32,12 @@ const issuesReducer = (state = initialState, { type, payload }) => {
             ...state,
             issues: payload.issues,
             totalIssuesCount: payload.totalIssuesCount,
+         }
+
+      case SET_CURRENT_ISSUE:
+         return {
+            ...state,
+            currentIssue: payload,
          }
 
       case SET_PAGE:

@@ -4,6 +4,7 @@ import issuesAPI from '../../api/issues'
 import actionCreator from '../../helpers/actionCreator'
 import {
    SET_ISSUES,
+   SET_CURRENT_ISSUE,
    SET_PAGE,
    SET_IS_FETCHING,
    SET_SORT_FIELD,
@@ -12,6 +13,7 @@ import {
 } from '../types/issues'
 
 export const setIssues = (payload) => actionCreator(SET_ISSUES, payload)
+export const setCurrentIssue = (payload) => actionCreator(SET_CURRENT_ISSUE, payload)
 export const setRepoData = (payload) => actionCreator(SET_REPO_DATA, payload)
 export const setPage = (payload) => actionCreator(SET_PAGE, payload)
 export const setIsFetching = (payload) => actionCreator(SET_IS_FETCHING, payload)
@@ -52,6 +54,24 @@ export const fetchIssues = () => async (dispatch, getState) => {
             totalIssuesCount: data.total_issues_count,
          }),
       )
+   } catch (error) {
+      console.error(error)
+   } finally {
+      dispatch(setIsFetching(false))
+   }
+}
+
+export const fetchCurrentIssue = ({ userName, repoName, number }) => async (dispatch, getState) => {
+   const { issues: { issues } } = getState()
+   const finded = issues.find((i) => i.number === number)
+
+   if (finded) return dispatch(setCurrentIssue(finded))
+
+   dispatch(setIsFetching(true))
+   try {
+      const { data } = await issuesAPI.getByNumber({ userName, repoName, number })
+
+      dispatch(setCurrentIssue(data.data))
    } catch (error) {
       console.error(error)
    } finally {
