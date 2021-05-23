@@ -1,9 +1,11 @@
-import { useEffect } from 'react'
+import { useEffect, useCallback } from 'react'
 import { useHistory } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 
-import { fetchIssues } from '../../../../store/actions/issues'
+import scrollTo from '../../../../helpers/scrollTo'
+import { setPage, fetchIssues } from '../../../../store/actions/issues'
 import Preloader from '../../../../components/Preloader'
+import Pagination from '../../../../components/Pagination'
 import IssuesItem from '../Item'
 
 const IssuesList = () => {
@@ -12,7 +14,13 @@ const IssuesList = () => {
 
    const issues = useSelector((state) => state.issues.issues)
    const page = useSelector((state) => state.issues.page)
+   const totalIssuesCount = useSelector((state) => state.issues.total_issues_count)
    const isFetching = useSelector((state) => state.issues.isFetching)
+
+   const onPageSelect = useCallback((selectedPage) => {
+      scrollTo({ top: 0 })
+      dispatch(setPage(+selectedPage))
+   }, [dispatch])
 
    useEffect(() => {
       dispatch(fetchIssues())
@@ -42,6 +50,15 @@ const IssuesList = () => {
                ))
                : null}
          </div>
+
+         {!isFetching && (
+            <Pagination
+               className="Issues__pagination"
+               currentPage={page}
+               totalPages={Math.ceil(totalIssuesCount / 30)}
+               onPageSelect={onPageSelect}
+            />
+         )}
       </div>
    )
 }
