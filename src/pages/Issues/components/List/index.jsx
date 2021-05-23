@@ -13,13 +13,15 @@ const IssuesList = () => {
    const history = useHistory()
    const dispatch = useDispatch()
 
-   const issues = useSelector((state) => state.issues.issues)
-   const page = useSelector((state) => state.issues.page)
-   const sortField = useSelector((state) => state.issues.sortField)
-   const sortDirection = useSelector((state) => state.issues.sortDirection)
-   const totalIssuesCount = useSelector((state) => state.issues.total_issues_count)
-   const isFetching = useSelector((state) => state.issues.isFetching)
-   const repoData = useSelector((state) => state.issues.repoData)
+   const {
+      issues,
+      page,
+      sortField,
+      sortDirection,
+      totalIssuesCount,
+      isFetching,
+      repoData,
+   } = useSelector((state) => state.issues)
 
    const onPageSelect = useCallback((selectedPage) => {
       dispatch(setPage(+selectedPage))

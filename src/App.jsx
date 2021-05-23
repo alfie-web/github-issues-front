@@ -1,9 +1,10 @@
-import IssuesPage from './pages/Issues'
 import Routes from './components/Routes'
+import IssuesPage from './pages/Issues'
+import IssuePage from './pages/Issue'
 
 const ROUTES = [
    { id: 1, path: '/', component: IssuesPage },
-   // { path: '/auth', component: AuthPage, auth: false },
+   { id: 2, path: '/:number', component: IssuePage },
 ]
 
 const App = () => (

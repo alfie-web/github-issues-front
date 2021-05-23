@@ -12,7 +12,7 @@ const Pagination = ({
    onPageSelect,
    className,
 }) => {
-   return (
+   return totalPages ? (
       <ul className={clsx('Pagination', className)}>
          {currentPage !== 1 && currentPage > 1 + offsetLeft && (
             <li
@@ -60,11 +60,12 @@ const Pagination = ({
             </li>
          )}
       </ul>
-   )
+   ) : null
 }
 
 Pagination.defaultProps = {
    currentPage: 1,
+   totalPages: 0,
    offsetLeft: 1,
    offsetRight: 3,
    onPageSelect: () => {},
@@ -73,7 +74,7 @@ Pagination.defaultProps = {
 
 Pagination.propTypes = {
    currentPage: PropTypes.number,
-   totalPages: PropTypes.number.isRequired,
+   totalPages: PropTypes.number,
    offsetLeft: PropTypes.number,
    offsetRight: PropTypes.number,
    onPageSelect: PropTypes.func,

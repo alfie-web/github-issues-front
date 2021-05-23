@@ -13,7 +13,7 @@ const urlParams = queryString.parse(window.location.search)
 const initialState = {
    issues: [],
    page: urlParams.page ? +urlParams.page : 1,
-   total_issues_count: null,
+   totalIssuesCount: null,
    isFetching: false,
    sortField: urlParams.state ?? 'all',
    sortDirection: urlParams.direction ?? 'desc',
@@ -29,7 +29,7 @@ const issuesReducer = (state = initialState, { type, payload }) => {
          return {
             ...state,
             issues: payload.issues,
-            total_issues_count: payload.total_issues_count,
+            totalIssuesCount: payload.totalIssuesCount,
          }
 
       case SET_PAGE:

@@ -1,3 +1,5 @@
+// import queryString from 'query-string'
+
 import issuesAPI from '../../api/issues'
 import actionCreator from '../../helpers/actionCreator'
 import {
@@ -23,9 +25,15 @@ export const fetchIssues = () => async (dispatch, getState) => {
          sortField,
          sortDirection,
          repoData,
+         // issues,
       },
    } = getState()
 
+   // const params = queryString.parse(window.location.search)
+   // // console.log(curDirection === sortDirection)
+   // if ((+params.page === page && params.direction === sortDirection
+   // && params.state === sortField)
+   //    && issues.length) return
    if (!repoData.userName || !repoData.repoName) return
 
    dispatch(setIsFetching(true))
@@ -41,7 +49,7 @@ export const fetchIssues = () => async (dispatch, getState) => {
       dispatch(
          setIssues({
             issues: data.issues,
-            total_issues_count: data.total_issues_count,
+            totalIssuesCount: data.total_issues_count,
          }),
       )
    } catch (error) {
