@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import queryString from 'query-string'
 
 import scrollTo from '../../../../helpers/scrollTo'
-import { setPage, fetchIssues } from '../../../../store/actions/issues'
+import { setPage, fetchIssues, setCurrentIssue } from '../../../../store/actions/issues'
 import Preloader from '../../../../components/Preloader'
 import Pagination from '../../../../components/Pagination'
 import IssuesItem from '../Item'
@@ -25,6 +25,7 @@ const IssuesList = () => {
 
    const onPageSelect = useCallback((selectedPage) => {
       dispatch(setPage(+selectedPage))
+      dispatch(setCurrentIssue(null))
    }, [dispatch])
 
    const getPageFromUrl = useCallback(() => {
@@ -42,6 +43,8 @@ const IssuesList = () => {
    }, [onBack])
 
    useEffect(() => {
+      scrollTo({ top: 0 })
+      
       dispatch(fetchIssues())
       const reqString = `/?userName=${repoData.userName}&repoName=${repoData.repoName}&page=${page}&state=${sortField}&direction=${sortDirection}`
 
@@ -51,8 +54,6 @@ const IssuesList = () => {
       } else {
          history.replace(reqString)
       }
-
-      scrollTo({ top: 0 })
    }, [dispatch, getPageFromUrl, history, page, sortField, sortDirection, repoData])
 
    return (

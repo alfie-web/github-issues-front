@@ -12,11 +12,11 @@ import {
    SET_REPO_DATA,
 } from '../types/issues'
 
-export const setIssues = (payload) => actionCreator(SET_ISSUES, payload)
+const setIssues = (payload) => actionCreator(SET_ISSUES, payload)
+const setIsFetching = (payload) => actionCreator(SET_IS_FETCHING, payload)
 export const setCurrentIssue = (payload) => actionCreator(SET_CURRENT_ISSUE, payload)
 export const setRepoData = (payload) => actionCreator(SET_REPO_DATA, payload)
 export const setPage = (payload) => actionCreator(SET_PAGE, payload)
-export const setIsFetching = (payload) => actionCreator(SET_IS_FETCHING, payload)
 export const setSortField = (payload) => actionCreator(SET_SORT_FIELD, payload)
 export const setSortDirection = (payload) => actionCreator(SET_SORT_DIRECTION, payload)
 
@@ -27,15 +27,12 @@ export const fetchIssues = () => async (dispatch, getState) => {
          sortField,
          sortDirection,
          repoData,
-         // issues,
+         issues,
+         currentIssue,
       },
    } = getState()
 
-   // const params = queryString.parse(window.location.search)
-   // // console.log(curDirection === sortDirection)
-   // if ((+params.page === page && params.direction === sortDirection
-   // && params.state === sortField)
-   //    && issues.length) return
+   if (issues.find((i) => i.number === currentIssue?.number)) return
    if (!repoData.userName || !repoData.repoName) return
 
    dispatch(setIsFetching(true))
@@ -51,7 +48,7 @@ export const fetchIssues = () => async (dispatch, getState) => {
       dispatch(
          setIssues({
             issues: data.issues,
-            totalIssuesCount: data.total_issues_count,
+            totalIssuesCount: data.totalIssuesCount,
          }),
       )
    } catch (error) {
