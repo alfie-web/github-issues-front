@@ -63,7 +63,7 @@ export const fetchIssues = () => async (dispatch, getState) => {
 
 export const fetchCurrentIssue = ({ userName, repoName, number }) => async (dispatch, getState) => {
    const { issues: { issues } } = getState()
-   const finded = issues.find((i) => i.number === number)
+   const finded = issues.find((i) => i.number === +number)
 
    if (finded) return dispatch(setCurrentIssue(finded))
 

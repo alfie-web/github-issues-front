@@ -1,0 +1,45 @@
+@import '../../styles/vars'
+	
+.Issue
+	&__body
+		margin-top: 30px
+
+		h1, h2, h3, ol, pre
+			margin-bottom: 30px
+
+		ol
+			list-style-type: decimal
+			list-style-position: inside
+			li
+				margin: 10px 0
+
+		pre
+			width: 100%
+			padding: 30px !important
+			overflow: auto
+			overflow-y: hidden
+			font-size: 16px
+			line-height: 30px
+			background: $light
+			border-radius: $border-radius
+			padding: 10px
+			color: #333
+
+
+	&__assignees
+		margin-top: 30px
+
+		&-avatars
+			display: flex
+			flex-wrap: wrap
+
+			.Avatar
+				margin: 10px 10px 0 0
+
+		
+	&__user
+		margin-bottom: 30px
+
+
+	&__title
+		color: $accent

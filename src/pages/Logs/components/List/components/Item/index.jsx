@@ -34,7 +34,7 @@ const LogsItem = ({
 
             <div className="Logs__item-content-bottom">
                <span className="Logs__item-ip"> User IP - {userIP}</span>
-               <h2 className="Logs__item-title">{url}</h2>
+               <h3 className="Logs__item-title">{url}</h3>
             </div>
          </div>
       </div>

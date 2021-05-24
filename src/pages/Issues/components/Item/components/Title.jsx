@@ -1,18 +1,18 @@
 import { Link } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 
-import IssuesItemTypes from '../types'
+import IssuesItemTypes from '../../../types'
 
 const IssueTitle = ({ number, title }) => {
    const repoData = useSelector((state) => state.issues.repoData)
 
    return repoData ? (
-      <h2 className="Issues__item-title">
-         <Link to={`/${number}/${repoData.userName}/${repoData.repoName}`}>
+      <h3 className="Issues__item-title">
+         <Link to={`/${repoData.userName}/${repoData.repoName}/${number}`}>
             {title}
             <span>{number}</span>
          </Link>
-      </h2>
+      </h3>
    ) : null
 }
 

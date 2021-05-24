@@ -6,7 +6,7 @@ import LogsPage from './pages/Logs'
 const ROUTES = [
    { id: 1, path: '/logs', component: LogsPage },
    { id: 2, path: '/', component: IssuesPage },
-   { id: 3, path: '/:number/:userName/:repoName', component: IssuePage },
+   { id: 3, path: '/:userName/:repoName/:number', component: IssuePage },
 ]
 
 const App = () => (
