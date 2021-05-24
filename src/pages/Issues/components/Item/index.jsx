@@ -1,8 +1,8 @@
 import { memo } from 'react'
 
-import IssuesItemTypes from './types'
+import IssuesItemTypes from '../../types'
 import Avatar from '../../../../components/Avatar'
-import IssueLabels from './components/Labels'
+import Labels from '../../../../components/Labels'
 import IssueInfo from './components/Info'
 import IssueTitle from './components/Title'
 
@@ -24,7 +24,7 @@ const IssuesItem = ({
 
          <div className="Issues__item-content">
             <div className="Issues__item-content-top">
-               <IssueLabels labels={labels} />
+               <Labels labels={labels} />
 
                <IssueInfo
                   state={state}

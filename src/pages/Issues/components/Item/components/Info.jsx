@@ -1,7 +1,7 @@
 import dayjs from 'dayjs'
 import clsx from 'clsx'
 
-import IssuesItemTypes from '../types'
+import IssuesItemTypes from '../../../types'
 
 const IssueInfo = ({ state, createdAt }) => {
    return (

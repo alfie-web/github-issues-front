@@ -1,34 +1,50 @@
 import { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
+import Markdown from 'markdown-to-jsx'
 
 import { fetchCurrentIssue } from '../../store/actions/issues'
-import Preloader from '../../components/Preloader'
+import Labels from '../../components/Labels'
+import Avatar from '../../components/Avatar'
+import IssuePreloader from './components/Preloader'
+import IssueAssignees from './components/Assignees'
 
-// const IssuePagePreloader = () => {
-//    const isFetching = useSelector((state) => state.issues.isFetching)
-//    // console.log('RENDERS', isFetching)
-
-//    return isFetching ? <Preloader /> : null
-// }
+import './Issue.sass'
 
 const IssuePage = () => {
    const dispatch = useDispatch()
    const params = useParams()
-   const { currentIssue, isFetching } = useSelector((state) => state.issues)
-   console.log('RENDERS')
+   const currentIssue = useSelector((state) => state.issues.currentIssue)
 
    useEffect(() => {
       dispatch(fetchCurrentIssue(params))
    }, [dispatch, params])
 
-   return !isFetching ? (
+   return currentIssue ? (
       <main className="Issue page">
          <div className="container">
-            {currentIssue && <h1>{currentIssue.title}</h1>}
+            <Avatar
+               className="Issue__user"
+               url={currentIssue.user.avatar_url}
+               userName={currentIssue.user.login}
+            />
+
+            <Labels labels={currentIssue.labels} />
+
+            <h1 className="Issue__title">
+               {currentIssue.title}
+            </h1>
+
+            <Markdown className="Issue__body">
+               {currentIssue.body}
+            </Markdown>
+
+            <IssueAssignees assignees={currentIssue.assignees} />
          </div>
       </main>
-   ) : <Preloader />
+   ) : (
+      <IssuePreloader />
+   )
 }
 
 export default IssuePage

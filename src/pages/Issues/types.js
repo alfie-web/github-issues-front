@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types'
+import { labelTypes } from '../../components/Label'
 
 const IssuesItemTypes = {
    title: PropTypes.string,
@@ -8,11 +9,7 @@ const IssuesItemTypes = {
       login: PropTypes.string,
    }),
    labels: PropTypes.arrayOf(
-      PropTypes.shape({
-         id: PropTypes.number,
-         name: PropTypes.string,
-         color: PropTypes.string,
-      }),
+      PropTypes.shape(labelTypes),
    ),
    state: PropTypes.string,
    createdAt: PropTypes.string,
