@@ -20,29 +20,40 @@ export const setPage = (payload) => actionCreator(SET_PAGE, payload)
 export const setSortField = (payload) => actionCreator(SET_SORT_FIELD, payload)
 export const setSortDirection = (payload) => actionCreator(SET_SORT_DIRECTION, payload)
 
-export const fetchIssues = () => async (dispatch, getState) => {
+export const fetchIssues = (
+   page,
+   sortDirection,
+   sortField,
+   userName,
+   repoName,
+) => async (dispatch, getState) => {
    const {
       issues: {
-         page,
-         sortField,
-         sortDirection,
-         repoData,
          issues,
          currentIssue,
       },
    } = getState()
 
+   console.log('ttttt')
+
    if (issues.find((i) => i.number === currentIssue?.number)) return
-   if (!repoData.userName || !repoData.repoName) return
+   if (!userName || !repoName) return
 
    dispatch(setIsFetching(true))
+   // Можно убрать, но тогда нужно переделать компоненты зависящие от этих данных, 
+   // (Pagination, Sort, SearchFrom) на данные url'а 
+   dispatch(setPage(page))
+   dispatch(setSortDirection(sortDirection))
+   dispatch(setSortField(sortField))
+   dispatch(setRepoData({ userName, repoName }))
 
    try {
       const { data } = await issuesAPI.getAll({
          page,
          sortField,
          sortDirection,
-         ...repoData,
+         userName,
+         repoName,
       })
 
       dispatch(
@@ -52,11 +63,48 @@ export const fetchIssues = () => async (dispatch, getState) => {
          }),
       )
    } catch (error) {
-      console.error(error)
+      window.flash('Что-то пошло не так', 'error')
    } finally {
       dispatch(setIsFetching(false))
    }
 }
+// export const fetchIssues = () => async (dispatch, getState) => {
+//    const {
+//       issues: {
+//          page,
+//          sortField,
+//          sortDirection,
+//          repoData,
+//          issues,
+//          currentIssue,
+//       },
+//    } = getState()
+
+//    if (issues.find((i) => i.number === currentIssue?.number)) return
+//    if (!repoData.userName || !repoData.repoName) return
+
+//    dispatch(setIsFetching(true))
+
+//    try {
+//       const { data } = await issuesAPI.getAll({
+//          page,
+//          sortField,
+//          sortDirection,
+//          ...repoData,
+//       })
+
+//       dispatch(
+//          setIssues({
+//             issues: data.issues,
+//             totalIssuesCount: data.totalIssuesCount,
+//          }),
+//       )
+//    } catch (error) {
+//       console.error(error)
+//    } finally {
+//       dispatch(setIsFetching(false))
+//    }
+// }
 
 export const fetchCurrentIssue = ({ userName, repoName, number }) => async (dispatch, getState) => {
    const { issues: { issues } } = getState()
@@ -70,7 +118,7 @@ export const fetchCurrentIssue = ({ userName, repoName, number }) => async (disp
 
       dispatch(setCurrentIssue(data.data))
    } catch (error) {
-      console.error(error)
+      window.flash('Что-то пошло не так', 'error')
    } finally {
       dispatch(setIsFetching(false))
    }

@@ -1,12 +1,13 @@
 import { useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useHistory } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 
-import { setRepoData } from '../../../../store/actions/issues'
+import getQueryParams from '../../../../helpers/getQueryParams'
 import Input from '../../../../components/Input'
 import Button from '../../../../components/Button'
 
 const SearchForm = () => {
-   const dispatch = useDispatch()
+   const history = useHistory()
    const repoData = useSelector((state) => state.issues.repoData)
 
    const [formData, setFormData] = useState(repoData)
@@ -19,7 +20,14 @@ const SearchForm = () => {
    }
 
    const onSearch = () => {
-      dispatch(setRepoData(formData))
+      const params = getQueryParams()
+      const p = params.page ? +params.page : 1
+      const f = params.state ? params.state : 'all'
+      const d = params.direction ? params.direction : 'desc'
+
+      history.push(
+         `/?userName=${formData.userName}&repoName=${formData.repoName}&page=${p}&state=${f}&direction=${d}`,
+      )
    }
 
    return (

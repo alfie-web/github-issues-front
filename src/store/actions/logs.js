@@ -15,7 +15,7 @@ export const fetchLogs = () => async (dispatch, getState) => {
       
       dispatch(setLogs(data.data))
    } catch (error) {
-      console.error(error)
+      window.flash('Что-то пошло не так', 'error')
    } finally {
       dispatch(setIsFetching(false))
    }

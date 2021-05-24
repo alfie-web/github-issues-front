@@ -1,20 +1,37 @@
 import { memo } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector } from 'react-redux'
+import { useHistory } from 'react-router-dom'
 
-import { setSortField, setSortDirection } from '../../../../store/actions/issues'
+import getQueryParams from '../../../../helpers/getQueryParams'
 import Select from '../../../../components/Select'
 
 const IssuesSort = () => {
-   const dispatch = useDispatch()
+   const history = useHistory()
    const sortField = useSelector((state) => state.issues.sortField)
    const sortDirection = useSelector((state) => state.issues.sortDirection)
 
    const onSelectField = (data) => {
-      dispatch(setSortField(data))
+      const params = getQueryParams()
+      const p = params.page ? +params.page : 1
+      const d = params.direction ? params.direction : 'desc'
+      const u = params.userName ? params.userName : ''
+      const r = params.repoName ? params.repoName : ''
+
+      history.push(
+         `/?userName=${u}&repoName=${r}&page=${p}&state=${data}&direction=${d}`,
+      )
    }
 
    const onSelectDirection = (data) => {
-      dispatch(setSortDirection(data))
+      const params = getQueryParams()
+      const p = params.page ? +params.page : 1
+      const f = params.state ? params.state : 'all'
+      const u = params.userName ? params.userName : ''
+      const r = params.repoName ? params.repoName : ''
+
+      history.push(
+         `/?userName=${u}&repoName=${r}&page=${p}&state=${f}&direction=${data}`,
+      )
    }
 
    return (
