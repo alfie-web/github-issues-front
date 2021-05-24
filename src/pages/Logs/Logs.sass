@@ -1,0 +1,58 @@
+@import '../../styles/vars'
+
+.Logs
+	&__list
+		margin-top: 30px
+
+	&__item
+		display: flex
+		align-items: center
+		justify-content: space-between
+		width: 100%
+		padding: 20px 35px 20px 30px 
+		border-radius: $border-radius
+		border-bottom: 1px solid $light
+		overflow: hidden
+		transition: background-color .3s
+
+		&:hover
+			background-color: $light
+
+		&-content
+			width: 100%
+			&-top
+				display: flex
+				justify-content: space-between
+
+		&-title
+			word-wrap: break-word
+			color: $accent
+		
+		&-status
+			margin: 0 10px
+			&.green
+				color: $green
+			&.blue
+				color: $accent
+			&.red
+				color: $red
+
+		&-action
+			color: $gray
+
+		&-ip
+			display: block
+			margin: 10px 0 10px
+	
+
+@media only screen and ( max-width:  700px)
+	.Logs
+		&__item
+			padding: 20px
+			
+			&-info
+				width: 100%
+				margin-top: 10px
+
+			&-content-top
+				flex-wrap: wrap
