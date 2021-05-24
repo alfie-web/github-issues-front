@@ -19,15 +19,12 @@ const IssuesList = () => {
       page,
       totalIssuesCount,
       isFetching,
-      // repoData,
    } = useSelector((state) => state.issues)
 
    const onPageSelect = (newPage) => {
       const data = getQueryParams(window.location.search)
       history.push(
          `/?userName=${data.userName}&repoName=${data.repoName}&page=${+newPage}&state=${data.state}&direction=${data.direction}`,
-         // `/?userName=${repoData.userName}&repoName=
-         // ${repoData.repoName}&page=${+newPage}&state=${data.state}&direction=${data.direction}`,
       )
       dispatch(setCurrentIssue(null))
    }

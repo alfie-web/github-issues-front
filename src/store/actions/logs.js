@@ -6,10 +6,12 @@ export const setLogs = (payload) => actionCreator(SET_LOGS, payload)
 export const setPage = (payload) => actionCreator(SET_PAGE, payload)
 export const setIsFetching = (payload) => actionCreator(SET_IS_FETCHING, payload)
 
-export const fetchLogs = () => async (dispatch, getState) => {
-   const { logs: { page } } = getState()
+export const fetchLogs = (page = 1) => async (dispatch) => {
+   // const { logs: { page } } = getState()
 
    dispatch(setIsFetching(true))
+   dispatch(setPage(page))
+
    try {
       const { data } = await logsAPI.getAll(page)
       
@@ -20,3 +22,17 @@ export const fetchLogs = () => async (dispatch, getState) => {
       dispatch(setIsFetching(false))
    }
 }
+// export const fetchLogs = () => async (dispatch, getState) => {
+//    const { logs: { page } } = getState()
+
+//    dispatch(setIsFetching(true))
+//    try {
+//       const { data } = await logsAPI.getAll(page)
+      
+//       dispatch(setLogs(data.data))
+//    } catch (error) {
+//       window.flash('Что-то пошло не так', 'error')
+//    } finally {
+//       dispatch(setIsFetching(false))
+//    }
+// }

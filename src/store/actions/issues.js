@@ -21,11 +21,11 @@ export const setSortField = (payload) => actionCreator(SET_SORT_FIELD, payload)
 export const setSortDirection = (payload) => actionCreator(SET_SORT_DIRECTION, payload)
 
 export const fetchIssues = (
-   page,
-   sortDirection,
-   sortField,
-   userName,
-   repoName,
+   page = 1,
+   sortDirection = 'desc',
+   sortField = 'all',
+   userName = '',
+   repoName = '',
 ) => async (dispatch, getState) => {
    const {
       issues: {
