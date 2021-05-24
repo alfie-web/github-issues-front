@@ -10,18 +10,20 @@ import {
 } from '../types/issues'
 
 const urlParams = queryString.parse(window.location.search)
+const isIssuesPage = window.location.pathname === '/'
 
+// TODO: Порефакторить (как минимум деструктурировать urlParams)
 const initialState = {
    issues: [],
    currentIssue: null,
-   page: urlParams.page ? +urlParams.page : 1,
+   page: urlParams.page && isIssuesPage ? +urlParams.page : 1,
    totalIssuesCount: null,
    isFetching: false,
-   sortField: urlParams.state ?? 'all',
-   sortDirection: urlParams.direction ?? 'desc',
+   sortField: urlParams.state && isIssuesPage ? urlParams.state : 'all',
+   sortDirection: urlParams.direction && isIssuesPage ? urlParams.direction : 'desc',
    repoData: {
-      userName: urlParams.userName ?? '',
-      repoName: urlParams.repoName ?? '',
+      userName: urlParams.userName && isIssuesPage ? urlParams.userName : '',
+      repoName: urlParams.repoName && isIssuesPage ? urlParams.repoName : '',
    },
 }
 
