@@ -19,8 +19,8 @@ const initialState = {
    page: urlParams.page && isIssuesPage ? +urlParams.page : 1,
    totalIssuesCount: null,
    isFetching: false,
-   sortField: urlParams.state && isIssuesPage ? urlParams.state : 'all',
-   sortDirection: urlParams.direction && isIssuesPage ? urlParams.direction : 'desc',
+   sortField: urlParams.sortField && isIssuesPage ? urlParams.sortDirection : 'all',
+   sortDirection: urlParams.sortDirection && isIssuesPage ? urlParams.sortDirection : 'desc',
    repoData: {
       userName: urlParams.userName && isIssuesPage ? urlParams.userName : '',
       repoName: urlParams.repoName && isIssuesPage ? urlParams.repoName : '',

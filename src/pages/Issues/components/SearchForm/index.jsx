@@ -22,11 +22,11 @@ const SearchForm = () => {
    const onSearch = () => {
       const params = getQueryParams()
       const p = params.page ? +params.page : 1
-      const s = params.state ? params.state : 'all'
-      const d = params.direction ? params.direction : 'desc'
+      const f = params.sortField ? params.sortField : 'all'
+      const d = params.sortDirection ? params.sortDirection : 'desc'
 
       history.push(
-         `/?userName=${formData.userName}&repoName=${formData.repoName}&page=${p}&state=${s}&direction=${d}`,
+         `/?userName=${formData.userName}&repoName=${formData.repoName}&page=${p}&sortField=${f}&sortDirection=${d}`,
       )
    }
 

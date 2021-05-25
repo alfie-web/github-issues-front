@@ -24,7 +24,7 @@ const IssuesList = () => {
    const onPageSelect = (newPage) => {
       const data = getQueryParams(window.location.search)
       history.push(
-         `/?userName=${data.userName}&repoName=${data.repoName}&page=${+newPage}&state=${data.state}&direction=${data.direction}`,
+         `/?userName=${data.userName}&repoName=${data.repoName}&page=${+newPage}&sortField=${data.sortField}&sortDirection=${data.sortDirection}`,
       )
    }
 
@@ -33,8 +33,8 @@ const IssuesList = () => {
 
       dispatch(fetchIssues(
          data.page,
-         data.direction,
-         data.state,
+         data.sortDirection,
+         data.sortField,
          data.userName,
          data.repoName,
       ))
