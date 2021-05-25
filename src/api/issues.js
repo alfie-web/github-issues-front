@@ -9,7 +9,7 @@ const issuesAPI = {
       repoName,
    }) => {
       return axios.get(
-         `/github/issues/?userName=${userName}&repoName=${repoName}&page=${page}&state=${sortField}&direction=${sortDirection}`,
+         `/github/issues/?userName=${userName}&repoName=${repoName}&page=${page}&sortField=${sortField}&sortDirection=${sortDirection}`,
       )
    },
    getByNumber: ({ userName, repoName, number }) => {

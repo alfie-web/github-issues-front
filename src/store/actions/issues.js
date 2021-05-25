@@ -1,5 +1,3 @@
-// import queryString from 'query-string'
-
 import issuesAPI from '../../api/issues'
 import actionCreator from '../../helpers/actionCreator'
 import {
@@ -12,50 +10,70 @@ import {
    SET_REPO_DATA,
 } from '../types/issues'
 
-export const setIssues = (payload) => actionCreator(SET_ISSUES, payload)
+const setIssues = (payload) => actionCreator(SET_ISSUES, payload)
+const setIsFetching = (payload) => actionCreator(SET_IS_FETCHING, payload)
 export const setCurrentIssue = (payload) => actionCreator(SET_CURRENT_ISSUE, payload)
 export const setRepoData = (payload) => actionCreator(SET_REPO_DATA, payload)
 export const setPage = (payload) => actionCreator(SET_PAGE, payload)
-export const setIsFetching = (payload) => actionCreator(SET_IS_FETCHING, payload)
 export const setSortField = (payload) => actionCreator(SET_SORT_FIELD, payload)
 export const setSortDirection = (payload) => actionCreator(SET_SORT_DIRECTION, payload)
 
-export const fetchIssues = () => async (dispatch, getState) => {
+export const fetchIssues = (
+   page = 1,
+   sortDirection = 'desc',
+   sortField = 'all',
+   userName = '',
+   repoName = '',
+) => async (dispatch, getState) => {
    const {
       issues: {
-         page,
-         sortField,
-         sortDirection,
+         issues,
+         page: curPage,
+         sortDirection: curDirection,
+         sortField: curField,
          repoData,
-         // issues,
       },
    } = getState()
 
-   // const params = queryString.parse(window.location.search)
-   // // console.log(curDirection === sortDirection)
-   // if ((+params.page === page && params.direction === sortDirection
-   // && params.state === sortField)
-   //    && issues.length) return
-   if (!repoData.userName || !repoData.repoName) return
+   // Чтобы при возврате на страницу Issues не грузить уже имеющиеся issues
+   if ((
+      page === curPage && 
+      sortDirection === curDirection &&
+      sortField === curField &&
+      userName === repoData.userName &&
+      repoName === repoData.repoName) && 
+      issues.length
+   ) return 
+
+   if (!userName || !repoName) return
 
    dispatch(setIsFetching(true))
+
+   // Обновляю компоненты Issues page (Pagination, Sort, SearchForm)
+   dispatch(setPage(page))
+   dispatch(setSortDirection(sortDirection))
+   dispatch(setSortField(sortField))
+   dispatch(setRepoData({ userName, repoName }))
 
    try {
       const { data } = await issuesAPI.getAll({
          page,
          sortField,
          sortDirection,
-         ...repoData,
+         userName,
+         repoName,
       })
 
       dispatch(
          setIssues({
             issues: data.issues,
-            totalIssuesCount: data.total_issues_count,
+            totalIssuesCount: data.totalIssuesCount,
          }),
       )
+
    } catch (error) {
-      console.error(error)
+      window.flash('Что-то пошло не так. Попробуйте перезагрузить страницу!', 'error')
+
    } finally {
       dispatch(setIsFetching(false))
    }
@@ -68,12 +86,14 @@ export const fetchCurrentIssue = ({ userName, repoName, number }) => async (disp
    if (finded) return dispatch(setCurrentIssue(finded))
 
    dispatch(setIsFetching(true))
+
    try {
       const { data } = await issuesAPI.getByNumber({ userName, repoName, number })
-
       dispatch(setCurrentIssue(data.data))
+
    } catch (error) {
-      console.error(error)
+      window.flash('Что-то пошло не так. Попробуйте перезагрузить страницу!', 'error')
+
    } finally {
       dispatch(setIsFetching(false))
    }

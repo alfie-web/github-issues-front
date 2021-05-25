@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import Markdown from 'markdown-to-jsx'
 
+import scrollTo from '../../helpers/scrollTo'
 import { fetchCurrentIssue } from '../../store/actions/issues'
 import Labels from '../../components/Labels'
 import Avatar from '../../components/Avatar'
@@ -15,6 +16,10 @@ const IssuePage = () => {
    const dispatch = useDispatch()
    const params = useParams()
    const currentIssue = useSelector((state) => state.issues.currentIssue)
+
+   useEffect(() => {
+      scrollTo({ top: 0 })
+   }, [])
 
    useEffect(() => {
       dispatch(fetchCurrentIssue(params))

@@ -8,19 +8,19 @@ import {
    SET_SORT_DIRECTION,
    SET_REPO_DATA,
 } from '../types/issues'
+import updateStore from '../../helpers/updateStore'
 
 const urlParams = queryString.parse(window.location.search)
 const isIssuesPage = window.location.pathname === '/'
 
-// TODO: Порефакторить (как минимум деструктурировать urlParams)
 const initialState = {
    issues: [],
    currentIssue: null,
    page: urlParams.page && isIssuesPage ? +urlParams.page : 1,
    totalIssuesCount: null,
    isFetching: false,
-   sortField: urlParams.state && isIssuesPage ? urlParams.state : 'all',
-   sortDirection: urlParams.direction && isIssuesPage ? urlParams.direction : 'desc',
+   sortField: urlParams.sortField && isIssuesPage ? urlParams.sortDirection : 'all',
+   sortDirection: urlParams.sortDirection && isIssuesPage ? urlParams.sortDirection : 'desc',
    repoData: {
       userName: urlParams.userName && isIssuesPage ? urlParams.userName : '',
       repoName: urlParams.repoName && isIssuesPage ? urlParams.repoName : '',
@@ -30,47 +30,40 @@ const initialState = {
 const issuesReducer = (state = initialState, { type, payload }) => {
    switch (type) {
       case SET_ISSUES:
-         return {
-            ...state,
+         return updateStore(state, {
             issues: payload.issues,
             totalIssuesCount: payload.totalIssuesCount,
-         }
+         })
 
       case SET_CURRENT_ISSUE:
-         return {
-            ...state,
+         return updateStore(state, {
             currentIssue: payload,
-         }
+         })
 
       case SET_PAGE:
-         return {
-            ...state,
+         return updateStore(state, {
             page: payload,
-         }
+         })
 
       case SET_SORT_FIELD:
-         return {
-            ...state,
+         return updateStore(state, {
             sortField: payload,
-         }
+         })
 
       case SET_SORT_DIRECTION:
-         return {
-            ...state,
+         return updateStore(state, {
             sortDirection: payload,
-         }
+         })
 
       case SET_REPO_DATA:
-         return {
-            ...state,
+         return updateStore(state, {
             repoData: payload,
-         }
+         })
 
       case SET_IS_FETCHING:
-         return {
-            ...state,
+         return updateStore(state, {
             isFetching: payload,
-         }
+         })
 
       default: return state
    }

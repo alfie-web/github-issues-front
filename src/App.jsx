@@ -1,7 +1,12 @@
+import eventEmitter from './helpers/eventEmitter'
 import Routes from './components/Routes'
+import Header from './components/Header'
+import Flash from './components/Flash'
 import IssuesPage from './pages/Issues'
 import IssuePage from './pages/Issue'
 import LogsPage from './pages/Logs'
+
+window.flash = (message, type = 'success', position = 'top-right') => eventEmitter.emit('flash', { message, type, position })
 
 const ROUTES = [
    { id: 1, path: '/logs', component: LogsPage },
@@ -10,13 +15,16 @@ const ROUTES = [
 ]
 
 const App = () => (
-   <div className="App">
-      Hello!
+   <>
+      <Flash />
+      <div className="App">
+         <Header />
 
-      <Routes
-         routes={ROUTES}
-      />
-   </div>
+         <Routes
+            routes={ROUTES}
+         />
+      </div>
+   </>
 )
 
 export default App

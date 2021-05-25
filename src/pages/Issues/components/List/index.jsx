@@ -1,59 +1,50 @@
 import { useEffect, useCallback } from 'react'
 import { useHistory } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import queryString from 'query-string'
 
+import getQueryParams from '../../../../helpers/getQueryParams'
 import scrollTo from '../../../../helpers/scrollTo'
-import { setPage, fetchIssues } from '../../../../store/actions/issues'
+import { fetchIssues } from '../../../../store/actions/issues'
 import Preloader from '../../../../components/Preloader'
 import Pagination from '../../../../components/Pagination'
 import IssuesItem from '../Item'
 
 const IssuesList = () => {
+   // console.log('RENDERS')
    const history = useHistory()
    const dispatch = useDispatch()
 
    const {
       issues,
       page,
-      sortField,
-      sortDirection,
       totalIssuesCount,
       isFetching,
-      repoData,
    } = useSelector((state) => state.issues)
 
-   const onPageSelect = useCallback((selectedPage) => {
-      dispatch(setPage(+selectedPage))
+   const onPageSelect = (newPage) => {
+      const data = getQueryParams(window.location.search)
+      history.push(
+         `/?userName=${data.userName}&repoName=${data.repoName}&page=${+newPage}&sortField=${data.sortField}&sortDirection=${data.sortDirection}`,
+      )
+   }
+
+   const onURLChange = useCallback(() => {
+      const data = getQueryParams(window.location.search)
+
+      dispatch(fetchIssues(
+         data.page,
+         data.sortDirection,
+         data.sortField,
+         data.userName,
+         data.repoName,
+      ))
    }, [dispatch])
 
-   const getPageFromUrl = useCallback(() => {
-      return queryString.parse(history.location.search).page ?? 1
-   }, [history])
-
-   const onBack = useCallback(() => {
-      onPageSelect(getPageFromUrl())
-   }, [onPageSelect, getPageFromUrl])
-
    useEffect(() => {
-      window.addEventListener('popstate', onBack, false)
-
-      return () => window.removeEventListener('popstate', onBack, false)
-   }, [onBack])
-
-   useEffect(() => {
-      dispatch(fetchIssues())
-      const reqString = `/?userName=${repoData.userName}&repoName=${repoData.repoName}&page=${page}&state=${sortField}&direction=${sortDirection}`
-
-      // Нужно для корректной работы кнопок назад/вперёд в браузере
-      if (+getPageFromUrl() < page) {
-         history.push(reqString)
-      } else {
-         history.replace(reqString)
-      }
-
       scrollTo({ top: 0 })
-   }, [dispatch, getPageFromUrl, history, page, sortField, sortDirection, repoData])
+      
+      onURLChange()
+   }, [onURLChange, history.location.search])
 
    return (
       <div className="Issues__list">
@@ -79,14 +70,12 @@ const IssuesList = () => {
                : null}
          </div>
 
-         {!isFetching && (
-            <Pagination
-               className="Issues__pagination"
-               currentPage={+page}
-               totalPages={Math.ceil(totalIssuesCount / 30)}
-               onPageSelect={onPageSelect}
-            />
-         )}
+         <Pagination
+            className="Issues__pagination"
+            currentPage={+page}
+            totalPages={Math.ceil(totalIssuesCount / 30)}
+            onPageSelect={onPageSelect}
+         />
       </div>
    )
 }

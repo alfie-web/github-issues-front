@@ -1,10 +1,10 @@
-import { useEffect, useCallback } from 'react'
+import { useCallback, useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import queryString from 'query-string'
 
+import getQueryParams from '../../../../helpers/getQueryParams'
 import scrollTo from '../../../../helpers/scrollTo'
-import { setPage, fetchLogs } from '../../../../store/actions/logs'
+import { fetchLogs } from '../../../../store/actions/logs'
 
 import LogsPreloader from './components/Preloader'
 import LogsPagination from './components/Pagination'
@@ -12,44 +12,28 @@ import LogsItem from './components/Item'
 
 // TODO: Вынести логику пагинации в хук
 const LogsList = () => {
-   console.log('RENDERS')
    const history = useHistory()
    const dispatch = useDispatch()
 
-   const page = useSelector((state) => state.logs.page)
    const logs = useSelector((state) => state.logs.logs)
 
-   const getPageFromUrl = useCallback(() => {
-      return queryString.parse(history.location.search).page ?? 1
+   const onPageSelect = useCallback((selectedPage) => {
+      history.push(
+         `/logs/?page=${+selectedPage}`,
+      )
    }, [history])
 
-   const onPageSelect = useCallback((selectedPage) => {
-      dispatch(setPage(+selectedPage))
+   const onURLChange = useCallback(() => {
+      const data = getQueryParams(window.location.search)
+
+      dispatch(fetchLogs(data.page))
    }, [dispatch])
 
-   const onBack = useCallback(() => {
-      onPageSelect(getPageFromUrl())
-   }, [onPageSelect, getPageFromUrl])
-
    useEffect(() => {
-      window.addEventListener('popstate', onBack, false)
-
-      return () => window.removeEventListener('popstate', onBack, false)
-   }, [onBack])
-
-   useEffect(() => {
-      dispatch(fetchLogs())
-      const reqString = `/logs?page=${page}`
-
-      // Нужно для корректной работы кнопок назад/вперёд в браузере
-      if (+getPageFromUrl() < page) {
-         history.push(reqString)
-      } else {
-         history.replace(reqString)
-      }
-
       scrollTo({ top: 0 })
-   }, [dispatch, getPageFromUrl, history, page])
+      
+      onURLChange()
+   }, [onURLChange, history.location.search])
 
    return (
       <div className="Logs__list">

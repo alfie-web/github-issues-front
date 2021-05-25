@@ -1,0 +1,23 @@
+@import '../../styles/vars'
+
+.Header
+	padding: 20px 0
+
+	.container
+		display: flex
+
+	&__nav
+		&-item
+			$item: &
+			margin-right: 20px
+			color: $gray
+			cursor: pointer
+			a
+				color: $gray
+				text-decoration: none
+				font-size: 18px
+
+				&.active
+					color: $black !important
+					pointer-events: none !important
+				

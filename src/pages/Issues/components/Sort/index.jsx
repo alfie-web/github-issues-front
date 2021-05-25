@@ -1,20 +1,40 @@
 import { memo } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector } from 'react-redux'
+import { useHistory } from 'react-router-dom'
 
-import { setSortField, setSortDirection } from '../../../../store/actions/issues'
+import getQueryParams from '../../../../helpers/getQueryParams'
 import Select from '../../../../components/Select'
 
 const IssuesSort = () => {
-   const dispatch = useDispatch()
+   const history = useHistory()
    const sortField = useSelector((state) => state.issues.sortField)
    const sortDirection = useSelector((state) => state.issues.sortDirection)
 
+   const getQueryStr = () => {
+      const params = getQueryParams()
+      const p = params.page ? +params.page : 1
+      const f = params.sortField ? params.sortField : 'all'
+      const d = params.sortDirection ? params.sortDirection : 'desc'
+      const u = params.userName ? params.userName : ''
+      const r = params.repoName ? params.repoName : ''
+
+      return { p, f, d, u, r }
+   }
+
    const onSelectField = (data) => {
-      dispatch(setSortField(data))
+      const { p, d, u, r } = getQueryStr()
+
+      history.push(
+         `/?userName=${u}&repoName=${r}&page=${p}&sortField=${data}&sortDirection=${d}`,
+      )
    }
 
    const onSelectDirection = (data) => {
-      dispatch(setSortDirection(data))
+      const { p, f, u, r } = getQueryStr()
+
+      history.push(
+         `/?userName=${u}&repoName=${r}&page=${p}&sortField=${f}&sortDirection=${data}`,
+      )
    }
 
    return (
