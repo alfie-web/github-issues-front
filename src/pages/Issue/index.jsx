@@ -22,7 +22,7 @@ const IssuePage = () => {
    }, [])
 
    useEffect(() => {
-      dispatch(fetchCurrentIssue(params))   
+      dispatch(fetchCurrentIssue(params))
    }, [dispatch, params])
 
    return currentIssue ? (

@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 
 import getQueryParams from '../../../../helpers/getQueryParams'
 import scrollTo from '../../../../helpers/scrollTo'
-import { fetchIssues, setCurrentIssue } from '../../../../store/actions/issues'
+import { fetchIssues } from '../../../../store/actions/issues'
 import Preloader from '../../../../components/Preloader'
 import Pagination from '../../../../components/Pagination'
 import IssuesItem from '../Item'
@@ -26,7 +26,6 @@ const IssuesList = () => {
       history.push(
          `/?userName=${data.userName}&repoName=${data.repoName}&page=${+newPage}&state=${data.state}&direction=${data.direction}`,
       )
-      dispatch(setCurrentIssue(null))
    }
 
    const onURLChange = useCallback(() => {
@@ -40,14 +39,6 @@ const IssuesList = () => {
          data.repoName,
       ))
    }, [dispatch])
-
-   const onBack = useCallback(() => dispatch(setCurrentIssue(null)), [dispatch])
-
-   useEffect(() => {
-      window.addEventListener('popstate', onBack, false)
-
-      return () => window.removeEventListener('popstate', onBack, false)
-   }, [onBack])
 
    useEffect(() => {
       scrollTo({ top: 0 })

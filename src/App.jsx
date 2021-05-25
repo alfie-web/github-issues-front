@@ -1,5 +1,6 @@
 import eventEmitter from './helpers/eventEmitter'
 import Routes from './components/Routes'
+import Header from './components/Header'
 import Flash from './components/Flash'
 import IssuesPage from './pages/Issues'
 import IssuePage from './pages/Issue'
@@ -17,7 +18,7 @@ const App = () => (
    <>
       <Flash />
       <div className="App">
-         Hello!
+         <Header />
 
          <Routes
             routes={ROUTES}

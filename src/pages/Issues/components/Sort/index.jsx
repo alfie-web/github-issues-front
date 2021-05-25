@@ -10,12 +10,19 @@ const IssuesSort = () => {
    const sortField = useSelector((state) => state.issues.sortField)
    const sortDirection = useSelector((state) => state.issues.sortDirection)
 
-   const onSelectField = (data) => {
+   const getQueryStr = () => {
       const params = getQueryParams()
       const p = params.page ? +params.page : 1
+      const s = params.state ? params.state : 'all'
       const d = params.direction ? params.direction : 'desc'
       const u = params.userName ? params.userName : ''
       const r = params.repoName ? params.repoName : ''
+
+      return { p, s, d, u, r }
+   }
+
+   const onSelectField = (data) => {
+      const { p, d, u, r } = getQueryStr()
 
       history.push(
          `/?userName=${u}&repoName=${r}&page=${p}&state=${data}&direction=${d}`,
@@ -23,14 +30,10 @@ const IssuesSort = () => {
    }
 
    const onSelectDirection = (data) => {
-      const params = getQueryParams()
-      const p = params.page ? +params.page : 1
-      const f = params.state ? params.state : 'all'
-      const u = params.userName ? params.userName : ''
-      const r = params.repoName ? params.repoName : ''
+      const { p, s, u, r } = getQueryStr()
 
       history.push(
-         `/?userName=${u}&repoName=${r}&page=${p}&state=${f}&direction=${data}`,
+         `/?userName=${u}&repoName=${r}&page=${p}&state=${s}&direction=${data}`,
       )
    }
 

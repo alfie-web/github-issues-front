@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 
-import IssuesItemTypes from '../../../types'
+import IssuesItemTypes from '../../../../types'
 
 const IssueTitle = ({ number, title }) => {
    const repoData = useSelector((state) => state.issues.repoData)

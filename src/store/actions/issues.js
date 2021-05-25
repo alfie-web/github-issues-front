@@ -1,5 +1,3 @@
-// import queryString from 'query-string'
-
 import issuesAPI from '../../api/issues'
 import actionCreator from '../../helpers/actionCreator'
 import {
@@ -30,18 +28,28 @@ export const fetchIssues = (
    const {
       issues: {
          issues,
-         currentIssue,
+         page: curPage,
+         sortDirection: curDirection,
+         sortField: curField,
+         repoData,
       },
    } = getState()
 
-   console.log('ttttt')
+   // Чтобы при возврате на страницу Issues не грузить уже имеющиеся issues
+   if ((
+      page === curPage && 
+      sortDirection === curDirection &&
+      sortField === curField &&
+      userName === repoData.userName &&
+      repoName === repoData.repoName) && 
+      issues.length
+   ) return 
 
-   if (issues.find((i) => i.number === currentIssue?.number)) return
    if (!userName || !repoName) return
 
    dispatch(setIsFetching(true))
-   // Можно убрать, но тогда нужно переделать компоненты зависящие от этих данных, 
-   // (Pagination, Sort, SearchFrom) на данные url'а 
+
+   // Обновляю компоненты Issues page (Pagination, Sort, SearchForm)
    dispatch(setPage(page))
    dispatch(setSortDirection(sortDirection))
    dispatch(setSortField(sortField))
@@ -62,49 +70,14 @@ export const fetchIssues = (
             totalIssuesCount: data.totalIssuesCount,
          }),
       )
+
    } catch (error) {
-      window.flash('Что-то пошло не так', 'error')
+      window.flash('Что-то пошло не так. Попробуйте перезагрузить страницу!', 'error')
+
    } finally {
       dispatch(setIsFetching(false))
    }
 }
-// export const fetchIssues = () => async (dispatch, getState) => {
-//    const {
-//       issues: {
-//          page,
-//          sortField,
-//          sortDirection,
-//          repoData,
-//          issues,
-//          currentIssue,
-//       },
-//    } = getState()
-
-//    if (issues.find((i) => i.number === currentIssue?.number)) return
-//    if (!repoData.userName || !repoData.repoName) return
-
-//    dispatch(setIsFetching(true))
-
-//    try {
-//       const { data } = await issuesAPI.getAll({
-//          page,
-//          sortField,
-//          sortDirection,
-//          ...repoData,
-//       })
-
-//       dispatch(
-//          setIssues({
-//             issues: data.issues,
-//             totalIssuesCount: data.totalIssuesCount,
-//          }),
-//       )
-//    } catch (error) {
-//       console.error(error)
-//    } finally {
-//       dispatch(setIsFetching(false))
-//    }
-// }
 
 export const fetchCurrentIssue = ({ userName, repoName, number }) => async (dispatch, getState) => {
    const { issues: { issues } } = getState()
@@ -113,12 +86,14 @@ export const fetchCurrentIssue = ({ userName, repoName, number }) => async (disp
    if (finded) return dispatch(setCurrentIssue(finded))
 
    dispatch(setIsFetching(true))
+
    try {
       const { data } = await issuesAPI.getByNumber({ userName, repoName, number })
-
       dispatch(setCurrentIssue(data.data))
+
    } catch (error) {
-      window.flash('Что-то пошло не так', 'error')
+      window.flash('Что-то пошло не так. Попробуйте перезагрузить страницу!', 'error')
+
    } finally {
       dispatch(setIsFetching(false))
    }
